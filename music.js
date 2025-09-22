@@ -26,3 +26,4 @@ musicBtn.addEventListener("click", () => {
   isPlaying = !isPlaying;
 });
 </script>
+
