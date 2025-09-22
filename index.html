@@ -267,34 +267,51 @@ setInterval(() => {
   </audio>
 <div class="hearts"></div>
 
+<audio id="bg-music" src="HappyBirthday.mp3"></audio>
+<button id="music-btn" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+">🔊</button>
+
 <script>
-  const music = document.getElementById("bg-music");
-  const musicBtn = document.getElementById("music-btn");
-  
-  let isPlaying = true;
-  
-  window.addEventListener("load", () => {
-    music.muted = false;
-    music.play().catch(() => {
-      // nếu bị chặn thì phát nhạc khi user click lần đầu
-      document.body.addEventListener("click", () => {
-        music.muted = false;
-        music.play();
-      }, { once: true });
-    });
-  });
-  
-  musicBtn.addEventListener("click", () => {
-    if (isPlaying) {
-      music.pause();
-      musicBtn.textContent = "🔈";
-    } else {
+const music = document.getElementById("bg-music");
+const musicBtn = document.getElementById("music-btn");
+let isPlaying = false;
+
+// Khi load trang, cố gắng tự phát nhạc
+window.addEventListener("load", () => {
+  music.loop = true; // 🔁 đảm bảo lặp vô hạn
+  music.play().then(() => {
+    isPlaying = true;
+  }).catch(() => {
+    // Nếu autoplay bị chặn, chờ click đầu tiên
+    document.body.addEventListener("click", () => {
+      music.loop = true;
       music.play();
-      musicBtn.textContent = "🔊";
-    }
-    isPlaying = !isPlaying;
+      isPlaying = true;
+    }, { once: true });
   });
-  </script>
+});
+
+// Nút bật/tắt nhạc
+musicBtn.addEventListener("click", () => {
+  if (isPlaying) {
+    music.pause();
+    musicBtn.textContent = "🔈";
+  } else {
+    music.play();
+    musicBtn.textContent = "🔊";
+  }
+  isPlaying = !isPlaying;
+});
+</script>
+
     
   </body>
 </html>
